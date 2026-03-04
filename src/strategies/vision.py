@@ -1,7 +1,8 @@
 import time
 from pathlib import Path
 from src.models.profile import (
-    ExtractedDocument, DocumentProfile, ExtractionCost, PageMetadata
+    ExtractedDocument, DocumentProfile, ExtractionCost, PageMetadata,
+    TextBlock, BoundingBox
 )
 from .base import BaseExtractor
 

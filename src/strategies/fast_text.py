@@ -22,10 +22,8 @@ class FastTextExtractor(BaseExtractor):
                 full_text_parts.append(page_text)
                 
                 # Extract text blocks (lines)
-                # pdfplumber.extract_text() with layout=True is good, 
-                # but for structured blocks with BBoxes, we use page.extract_words()
-                # and group them by line.
                 words = page.extract_words()
+                line_tops = []
                 if words:
                     # Group by top coordinate (simple line detection)
                     current_line = []
@@ -38,6 +36,7 @@ class FastTextExtractor(BaseExtractor):
                         x1 = max(w['x1'] for w in line_words)
                         y1 = max(w['bottom'] for w in line_words)
                         text = " ".join(w['text'] for w in line_words)
+                        line_tops.append(y0)
                         blocks.append(TextBlock(
                             text=text,
                             bbox=BoundingBox(
@@ -45,11 +44,11 @@ class FastTextExtractor(BaseExtractor):
                                 x1=float(x1), y1=float(y1),
                                 page_number=page.page_number
                             ),
-                            confidence=1.0
+                            confidence=1.0 # Base confidence
                         ))
 
                     for word in words:
-                        if abs(word['top'] - last_top) < 2: # Tolerance for same line
+                        if abs(word['top'] - last_top) < 2: 
                             current_line.append(word)
                         else:
                             commit_line(current_line)
@@ -63,10 +62,10 @@ class FastTextExtractor(BaseExtractor):
                 p_area = p_width * p_height
                 char_count = len(page.chars)
                 
-                # Calculate image area properly
-                img_area = 0
-                for img in page.images:
-                    img_area += float(img.get('width', 0) * img.get('height', 0))
+                img_area = sum([float(i.get('width', 0) * i.get('height', 0)) for i in page.images])
+                
+                # Compute nuanced confidence
+                conf = self._calculate_signals(page_text, line_tops, char_count, p_area)
                 
                 pages_meta.append(PageMetadata(
                     page_number=page.page_number,
@@ -77,6 +76,7 @@ class FastTextExtractor(BaseExtractor):
                     image_area_ratio=img_area / p_area if p_area > 0 else 0,
                     images_count=len(page.images),
                     tables_count=len(page.find_tables()),
+                    extraction_confidence=conf,
                     strategy_used="fast_text"
                 ))
 
@@ -89,6 +89,32 @@ class FastTextExtractor(BaseExtractor):
             processing_time_s=time.time() - start_time,
             total_cost_usd=0.0
         )
+
+    def _calculate_signals(self, text: str, line_tops: list, char_count: int, area: float) -> float:
+        """Multi-signal confidence scoring"""
+        if not text: return 0.0
+        
+        # 1. Density Signal (Expected ~0.005 chars/pt²)
+        density = char_count / area if area > 0 else 0
+        density_signal = 1.0 - min(abs(density - 0.005) * 100, 0.5) 
+        
+        # 2. Garbage Signal (Alphanumeric ratio)
+        alnum_count = sum(c.isalnum() for c in text)
+        garbage_signal = alnum_count / len(text) if text else 0
+        
+        # 3. Structural Signal (Regularity of line spacing)
+        structural_signal = 1.0
+        if len(line_tops) > 5:
+            spacings = [line_tops[i] - line_tops[i-1] for i in range(1, len(line_tops))]
+            avg_spacing = sum(spacings) / len(spacings)
+            if avg_spacing > 0:
+                variance = sum((s - avg_spacing)**2 for s in spacings) / len(spacings)
+                std_dev = variance**0.5
+                # High std dev relative to spacing implies broken structure
+                structural_signal = max(0, 1.0 - (std_dev / avg_spacing))
+        
+        # Weighted combination
+        return (density_signal * 0.3) + (garbage_signal * 0.4) + (structural_signal * 0.3)
 
     @property
     def cost_tier(self) -> ExtractionCost:

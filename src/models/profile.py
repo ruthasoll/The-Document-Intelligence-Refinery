@@ -1,6 +1,6 @@
 from enum import Enum
 from typing import List, Optional, Dict, Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 
 class OriginType(str, Enum):
     NATIVE_DIGITAL = "native_digital"
@@ -33,10 +33,10 @@ class DocumentProfile(BaseModel):
     origin_type: OriginType
     layout_complexity: LayoutComplexity
     language: str = "en"
-    language_confidence: float = 1.0
+    language_confidence: float = Field(default=1.0, ge=0.0, le=1.0)
     domain_hint: DomainHint = DomainHint.GENERAL
     estimated_cost: ExtractionCost = ExtractionCost.LOW
-    page_count: int
+    page_count: int = Field(ge=1)
     metadata: Dict[str, Any] = Field(default_factory=dict)
     reasoning: str = ""
 
@@ -47,19 +47,28 @@ class BoundingBox(BaseModel):
     y0: float
     x1: float
     y1: float
-    page_number: int
+    page_number: int = Field(ge=1)
+
+    @model_validator(mode='after')
+    def check_bbox_sanity(self) -> 'BoundingBox':
+        # Automatically normalize ranges instead of failing
+        if self.x1 < self.x0:
+            self.x0, self.x1 = self.x1, self.x0
+        if self.y1 < self.y0:
+            self.y0, self.y1 = self.y1, self.y0
+        return self
 
 class TextBlock(BaseModel):
     text: str
     bbox: BoundingBox
-    confidence: float = 1.0
+    confidence: float = Field(default=1.0, ge=0.0, le=1.0)
 
 class TableCell(BaseModel):
     text: str
-    row_index: int
-    col_index: int
-    row_span: int = 1
-    col_span: int = 1
+    row_index: int = Field(ge=0)
+    col_index: int = Field(ge=0)
+    row_span: int = Field(default=1, ge=1)
+    col_span: int = Field(default=1, ge=1)
     is_header: bool = False
     bbox: Optional[BoundingBox] = None
 
@@ -75,15 +84,15 @@ class Figure(BaseModel):
     bbox: BoundingBox
 
 class PageMetadata(BaseModel):
-    page_number: int
-    width: float
-    height: float
-    char_count: int
-    char_density: float
-    image_area_ratio: float
-    images_count: int
-    tables_count: int
-    extraction_confidence: float = 1.0
+    page_number: int = Field(ge=1)
+    width: float = Field(gt=0)
+    height: float = Field(gt=0)
+    char_count: int = Field(ge=0)
+    char_density: float = Field(ge=0)
+    image_area_ratio: float = Field(ge=0.0, le=1.0)
+    images_count: int = Field(ge=0)
+    tables_count: int = Field(ge=0)
+    extraction_confidence: float = Field(default=1.0, ge=0.0, le=1.0)
     strategy_used: str
 
 class ExtractedDocument(BaseModel):
@@ -94,8 +103,8 @@ class ExtractedDocument(BaseModel):
     tables: List[Table] = Field(default_factory=list)
     figures: List[Figure] = Field(default_factory=list)
     full_text: str = ""
-    processing_time_s: float = 0.0
-    total_cost_usd: float = 0.0
+    processing_time_s: float = Field(default=0.0, ge=0.0)
+    total_cost_usd: float = Field(default=0.0, ge=0.0)
 
 # --- Semantic Chunking Models ---
 
