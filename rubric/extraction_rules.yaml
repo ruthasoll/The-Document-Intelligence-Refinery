@@ -45,3 +45,11 @@ extraction_rules:
     overlap: 50
   escalation:
     min_confidence: 0.7
+    weights:
+      char_density: 0.4
+      image_ratio: -0.3
+      font_consistency: 0.3
+  vision:
+    model: "gemini-1.5-flash"
+    budget_cap_usd_per_doc: 0.50
+    cost_per_1k_tokens: 0.0001
