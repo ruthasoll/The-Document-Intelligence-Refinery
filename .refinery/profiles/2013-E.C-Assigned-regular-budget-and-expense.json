@@ -1,0 +1,19 @@
+{
+  "doc_id": "2013-E.C-Assigned-regular-budget-and-expense",
+  "file_name": "2013-E.C-Assigned-regular-budget-and-expense.pdf",
+  "origin_type": "scanned_image",
+  "layout_complexity": "single_column",
+  "language": "en",
+  "language_confidence": 1.0,
+  "domain_hint": "general",
+  "estimated_cost": "high",
+  "page_count": 3,
+  "metadata": {
+    "page_count": 3,
+    "avg_char_density": 0.0,
+    "avg_image_ratio": 1.0,
+    "total_tables": 0,
+    "text_sample": ""
+  },
+  "reasoning": "Detected scanned_image due to char_density=0.000000 and image_ratio=1.000000. Layout is single_column based on 0 tables detected."
+}

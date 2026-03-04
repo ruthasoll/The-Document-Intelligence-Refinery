@@ -1,0 +1,18 @@
+[project]
+name = "the-document-intelligence-refinery"
+version = "0.1.0"
+description = "Production-grade multi-stage agentic pipeline for document extraction."
+authors = [
+    { name = "Forward Deployed Engineer", email = "fde@example.com" }
+]
+dependencies = [
+    "pdfplumber>=0.11.0",
+    "pydantic>=2.0.0",
+    "pyyaml>=6.0.0",
+    "pypdf>=5.0.0",
+    "docling>=2.0.0"
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

@@ -1,0 +1,47 @@
+triage_rules:
+  origin_type:
+    scanned_threshold:
+      max_char_density: 0.0001
+      min_image_ratio: 0.8
+    mixed_threshold:
+      min_char_density: 0.0005
+      min_image_ratio: 0.4
+  layout_complexity:
+    multi_column_min_lines: 20
+    table_heavy_min_tables_per_page: 0.5
+  domain_keywords:
+    financial:
+      - "auditor's report"
+      - "financial statements"
+      - "balance sheet"
+      - "income statement"
+      - "cash flows"
+      - "revenue"
+      - "profit"
+      - "banking"
+      - "bank"
+    legal:
+      - "proclamation"
+      - "regulation"
+      - "decree"
+      - "legal"
+      - "contract"
+      - "agreement"
+    government:
+      - "ministry of"
+      - "fdre"
+      - "expenditure"
+      - "tax"
+      - "fiscal"
+    technical:
+      - "assessment"
+      - "specification"
+      - "performance survey"
+      - "implementation"
+
+extraction_rules:
+  chunking:
+    max_tokens: 512
+    overlap: 50
+  escalation:
+    min_confidence: 0.7
