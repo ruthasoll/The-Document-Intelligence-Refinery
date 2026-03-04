@@ -1,0 +1,58 @@
+
+=============================================
+Analyzing with Docling: data/CBE ANNUAL REPORT 2023-24.pdf
+=============================================
+Processing time (first 5 pages): 32.78 seconds
+Extracted Text Blocks: 78
+Extracted Tables: 1
+Extracted Pictures/Figures: 2
+
+  First Table Snippet:
+    | CONTENTS                                                                       |        |
+|--------------------------------------------------------------------------------|--------|
+| PROFILE                                                                        | ii     |
+| VISION                                                                         | ii     |
+| MISSION                                                                        | ii     |
+| MOTTO                                 ...
+
+=============================================
+Analyzing with Docling: data/Audit Report - 2023.pdf
+=============================================
+Processing time (first 5 pages): 119.42 seconds
+Extracted Text Blocks: 48
+Extracted Tables: 1
+Extracted Pictures/Figures: 14
+
+  First Table Snippet:
+    | Tableofcontents                                                           | Page   |
+|---------------------------------------------------------------------------|--------|
+| Independentauditor'sreport                                                | 1-     |
+| Boardofmanagement,professionaladvisersandregisteredoffice                 | 5      |
+| Reportof theboardofmanagement                                             |        |
+| Statementofboardofmanagement'sresponsibilities                 ...
+
+=============================================
+Analyzing with Docling: data/fta_performance_survey_final_report_2022.pdf
+=============================================
+Processing time (first 5 pages): 14.59 seconds
+Extracted Text Blocks: 10
+Extracted Tables: 4
+Extracted Pictures/Figures: 1
+
+  First Table Snippet:
+    | List of Figures........................................................................................................................................iii   |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| List of Tables ..........................................................................................................................................v   |
+| Acknowledgement...
+
+=============================================
+Analyzing with Docling: data/tax_expenditure_ethiopia_2021_22.pdf
+=============================================
+Processing time (first 5 pages): 7.23 seconds
+Extracted Text Blocks: 25
+Extracted Tables: 1
+Extracted Pictures/Figures: 2
+
+  First Table Snippet:
+    | Executive summary...................................................................................................................... 4        | Executive summary...................................................................................................................... 4        | Executive summary...................................................................................................................... 4        |
+|--------------------------------------------------------...
