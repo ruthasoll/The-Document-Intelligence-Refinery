@@ -1,0 +1,180 @@
+
+=============================================
+Analyzing: data/CBE ANNUAL REPORT 2023-24.pdf
+=============================================
+Total pages: 161
+  Page 1:
+    Text extracted (chars): 0
+    Raw PDF char elements: 0
+    Character density: 0.000000 chars/pt^2
+    Image elements: 1
+    Image area ratio: 0.999908
+    Fonts identified: 0
+    Snippet: None
+  Page 2:
+    Text extracted (chars): 0
+    Raw PDF char elements: 0
+    Character density: 0.000000 chars/pt^2
+    Image elements: 1
+    Image area ratio: 0.999908
+    Fonts identified: 0
+    Snippet: None
+  Page 3:
+    Text extracted (chars): 841
+    Raw PDF char elements: 796
+    Character density: 0.001588 chars/pt^2
+    Image elements: 0
+    Image area ratio: 0.000000
+    Fonts identified: 2
+    Snippet: 'CONTENTS\nPROFILE ii\nVISION ii\nMISSION ii\nMOTTO ii\nVALUES ii-iii\nPERFORMANCE HIGHLIGHTS iv-v\nBOARD OF'
+  Page 4:
+    Text extracted (chars): 1995
+    Raw PDF char elements: 1960
+    Character density: 0.003911 chars/pt^2
+    Image elements: 0
+    Image area ratio: 0.000000
+    Fonts identified: 4
+    Snippet: 'PROFILE\nÂ Has been serving Ethiopia since 1942.\nÂ Pioneered ATM services in Ethiopia.\nÂ Introduced W'
+  Page 5:
+    Text extracted (chars): 1900
+    Raw PDF char elements: 1871
+    Character density: 0.003733 chars/pt^2
+    Image elements: 0
+    Image area ratio: 0.000000
+    Fonts identified: 4
+    Snippet: 'VALUES - (Continued)\nIv) Empowerment\nÂ We distinguish employees as valuable organizational resources'
+
+=============================================
+Analyzing: data/Audit Report - 2023.pdf
+=============================================
+Total pages: 95
+  Page 1:
+    Text extracted (chars): 121
+    Raw PDF char elements: 116
+    Character density: 0.000228 chars/pt^2
+    Image elements: 1
+    Image area ratio: 0.016207
+    Fonts identified: 5
+    Snippet: 'INDEPENDENT AUDiTOR’S REPORT\nAND\nFiNANCiAL STATEMENTS\n30 JUNE 2023\nDEVELOPMENT BANK OF ETHIOPIA\nYour'
+  Page 2:
+    Text extracted (chars): 0
+    Raw PDF char elements: 0
+    Character density: 0.000000 chars/pt^2
+    Image elements: 1
+    Image area ratio: 1.000000
+    Fonts identified: 0
+    Snippet: None
+  Page 3:
+    Text extracted (chars): 0
+    Raw PDF char elements: 0
+    Character density: 0.000000 chars/pt^2
+    Image elements: 1
+    Image area ratio: 1.000000
+    Fonts identified: 0
+    Snippet: None
+  Page 4:
+    Text extracted (chars): 0
+    Raw PDF char elements: 0
+    Character density: 0.000000 chars/pt^2
+    Image elements: 1
+    Image area ratio: 1.000000
+    Fonts identified: 0
+    Snippet: None
+  Page 5:
+    Text extracted (chars): 0
+    Raw PDF char elements: 0
+    Character density: 0.000000 chars/pt^2
+    Image elements: 1
+    Image area ratio: 1.000000
+    Fonts identified: 0
+    Snippet: None
+
+=============================================
+Analyzing: data/fta_performance_survey_final_report_2022.pdf
+=============================================
+Total pages: 155
+  Page 1:
+    Text extracted (chars): 318
+    Raw PDF char elements: 348
+    Character density: 0.000694 chars/pt^2
+    Image elements: 1
+    Image area ratio: 0.007258
+    Fonts identified: 6
+    Snippet: 'Assessment of Financial\nTransparency and Accountability\n(FTA) Implementation in Ethiopia\nFinal Repor'
+  Page 2:
+    Text extracted (chars): 5221
+    Raw PDF char elements: 5225
+    Character density: 0.010425 chars/pt^2
+    Image elements: 0
+    Image area ratio: 0.000000
+    Fonts identified: 3
+    Snippet: 'Contents\nList of Figures ...........................................................................'
+  Page 3:
+    Text extracted (chars): 3872
+    Raw PDF char elements: 3880
+    Character density: 0.007741 chars/pt^2
+    Image elements: 0
+    Image area ratio: 0.000000
+    Fonts identified: 2
+    Snippet: '3.2.3. Engagement of stakeholders ..................................................................'
+  Page 4:
+    Text extracted (chars): 4387
+    Raw PDF char elements: 4391
+    Character density: 0.008761 chars/pt^2
+    Image elements: 0
+    Image area ratio: 0.000000
+    Fonts identified: 3
+    Snippet: 'List of Figures\nFigure 1: Logical framework of FTA initiatives .....................................'
+  Page 5:
+    Text extracted (chars): 4434
+    Raw PDF char elements: 4438
+    Character density: 0.008855 chars/pt^2
+    Image elements: 0
+    Image area ratio: 0.000000
+    Fonts identified: 3
+    Snippet: 'Figure 36: Citizens’ understanding of FTA initiative in their areas ................................'
+
+=============================================
+Analyzing: data/tax_expenditure_ethiopia_2021_22.pdf
+=============================================
+Total pages: 60
+  Page 1:
+    Text extracted (chars): 121
+    Raw PDF char elements: 131
+    Character density: 0.000261 chars/pt^2
+    Image elements: 1
+    Image area ratio: 0.025136
+    Fonts identified: 3
+    Snippet: 'Import tax expenditure report\n:\nFY 2018/19 – 2020/21\nTax Policy Directorate, Ministry of Finance, Et'
+  Page 2:
+    Text extracted (chars): 712
+    Raw PDF char elements: 716
+    Character density: 0.001429 chars/pt^2
+    Image elements: 1
+    Image area ratio: 0.017964
+    Fonts identified: 4
+    Snippet: '2 Import tax expenditure report: FY 2018/19 – 2020/21\nPreface\nThis report has been prepared by the I'
+  Page 3:
+    Text extracted (chars): 2891
+    Raw PDF char elements: 2894
+    Character density: 0.005777 chars/pt^2
+    Image elements: 0
+    Image area ratio: 0.000000
+    Fonts identified: 5
+    Snippet: '3 Import tax expenditure report: FY 2018/19 – 2020/21\nContents\nExecutive summary ...................'
+  Page 4:
+    Text extracted (chars): 2704
+    Raw PDF char elements: 2708
+    Character density: 0.005405 chars/pt^2
+    Image elements: 0
+    Image area ratio: 0.000000
+    Fonts identified: 4
+    Snippet: '4 Import tax expenditure report: FY 2018/19 – 2020/21\nExecutive summary\nUnderstanding, estimating an'
+  Page 5:
+    Text extracted (chars): 1554
+    Raw PDF char elements: 1558
+    Character density: 0.003110 chars/pt^2
+    Image elements: 0
+    Image area ratio: 0.000000
+    Fonts identified: 4
+    Snippet: '5 Import tax expenditure report: FY 2018/19 – 2020/21\nimport value of affected goods in FY 2020/21, '
