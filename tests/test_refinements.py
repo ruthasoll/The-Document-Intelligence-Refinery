@@ -7,19 +7,17 @@ def test_bbox_validation():
     bbox = BoundingBox(x0=0, y0=0, x1=100, y1=100, page_number=1)
     assert bbox.x1 > bbox.x0
 
-    # Invalid x-range
-    try:
-        BoundingBox(x0=100, y0=0, x1=50, y1=100, page_number=1)
-        assert False, "Should have raised ValueError for invalid x-range"
-    except ValidationError as e:
-        assert "Invalid x-range" in str(e)
+    # Inverted x-range: Phase 2.5 Normalization Patch swaps x0/x1 silently
+    bbox_inv_x = BoundingBox(x0=100, y0=0, x1=50, y1=100, page_number=1)
+    assert bbox_inv_x.x0 == 50 and bbox_inv_x.x1 == 100, (
+        f"Expected x0=50, x1=100 after normalization, got x0={bbox_inv_x.x0}, x1={bbox_inv_x.x1}"
+    )
 
-    # Invalid y-range
-    try:
-        BoundingBox(x0=0, y0=100, x1=100, y1=50, page_number=1)
-        assert False, "Should have raised ValueError for invalid y-range"
-    except ValidationError as e:
-        assert "Invalid y-range" in str(e)
+    # Inverted y-range: normalized silently
+    bbox_inv_y = BoundingBox(x0=0, y0=100, x1=100, y1=50, page_number=1)
+    assert bbox_inv_y.y0 == 50 and bbox_inv_y.y1 == 100, (
+        f"Expected y0=50, y1=100 after normalization, got y0={bbox_inv_y.y0}, y1={bbox_inv_y.y1}"
+    )
 
 def test_pagemetadata_constraints():
     # Invalid image ratio

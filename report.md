@@ -1,6 +1,6 @@
-# Document Intelligence Refinery: Progress Report (Phases 0-2)
+# Document Intelligence Refinery: Progress Report (Phases 0-3)
 
-This report outlines the technical implementation and domain insights for the Document Intelligence Refinery, focusing on the first three phases of development: Triage, Multi-Strategy Extraction, and Refinement.
+This report outlines the technical implementation and domain insights for the Document Intelligence Refinery, covering all four phases of development: Triage, Multi-Strategy Extraction, Refinement, and Semantic Chunking & Hierarchical Indexing.
 
 ---
 
@@ -104,3 +104,66 @@ To reach mastery, we implemented several expert-requested features:
 *   **Pydantic Dominance**: Added `after` validators to `BoundingBox` to handle inverted coordinates (normalization).
 *   **Reading Order Persistence**: Updated `LayoutExtractor` to use Docling's hierarchical iteration.
 *   **Multi-Signal Confidence**: FastText now weights character density, garbage ratio, and structural regularities (line-spacing variance).
+
+---
+
+## 5. Phase 3: Semantic Chunking & Hierarchical Indexing
+
+Phase 3 completes the core intelligence pipeline by transforming raw extracted text into structured, queryable knowledge artifacts.
+
+### 5.1 Semantic Chunking Engine (`src/agents/chunker.py`)
+
+The `ChunkingEngine` converts `ExtractedDocument` blocks into **Logical Document Units (LDUs)** — the atomic unit of knowledge in the Refinery.
+
+| LDU Field | Description |
+| :--- | :--- |
+| `content` | Cleaned text or serialised table markdown |
+| `chunk_type` | `ChunkType` enum: `TEXT`, `TABLE`, `HEADER`, `FIGURE`, `LIST`, `CAPTION` |
+| `page_refs` | List of page numbers the chunk spans |
+| `parent_section` | `SectionRef` (title, level, page_number) for navigation |
+| `token_count` | Approximate token count for downstream LLM budget control |
+| `content_hash` | SHA-256 fingerprint for deduplication and provenance tracking |
+
+**Semantic Rule Enforcement** (via `rubric/extraction_rules.yaml`):
+- Minimum token threshold prevents stub chunks from polluting the index.
+- Table blocks are serialised to Markdown for LLM-readable structure.
+- Headers are promoted to `ChunkType.HEADER` and linked to a `SectionRef` with their nesting level.
+
+### 5.2 Hierarchical PageIndex Builder (`src/agents/indexer.py`)
+
+The `PageIndexBuilder` transforms the flat list of LDUs into a **nested `PageIndexTree`** that mirrors the logical document structure.
+
+**Nesting Algorithm:**
+1. Scan LDUs for `ChunkType.HEADER` entries and extract their `SectionRef.level`.
+2. Maintain a stack of `(level, SectionNode)` pairs.
+3. Pop stack entries at the same or deeper level when a new header is encountered.
+4. Attach the new node as a child of the stack top (if any) or as a root node.
+5. Accumulate non-header LDUs into the most recent section, updating its `page_end`, `chunk_ids`, and `data_types_present`.
+
+**Bug Fix Applied:** `SectionNode.data_types_present` is declared as `List[str]` in the Pydantic model. The indexer previously called `.add()` (a `set` method), causing an `AttributeError`. This was corrected to use `.append()` with a duplicate check.
+
+### 5.3 Verification Results
+
+All three hierarchy verification tests in `tests/test_hierarchy.py` pass:
+
+| Test | Scenario | Result |
+| :--- | :--- | :--- |
+| `test_hierarchical_nesting` | L1 → L2 nesting with sibling L1 | ✅ PASS |
+| `test_flat_single_level` | All headers at the same level | ✅ PASS |
+| `test_empty_ldus` | Zero LDUs — empty tree with no crash | ✅ PASS |
+
+Run with:
+```bash
+$env:PYTHONPATH = "."; .\env\Scripts\python.exe tests/test_hierarchy.py
+```
+
+### 5.4 Pipeline Completion Status
+
+| Stage | Component | Status |
+| :--- | :--- | :--- |
+| 1 | Triage Agent (`DocumentTriageAgent`) | ✅ Complete |
+| 2 | Extraction Router (`ExtractionRouter`) | ✅ Complete |
+| 3 | Semantic Chunking (`ChunkingEngine`) | ✅ Complete |
+| 4 | PageIndex Builder (`PageIndexBuilder`) | ✅ Complete |
+| 5 | Query Interface | 🔄 Phase 4 |
+

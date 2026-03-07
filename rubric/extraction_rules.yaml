@@ -53,3 +53,18 @@ extraction_rules:
     model: "gemini-1.5-flash"
     budget_cap_usd_per_doc: 0.50
     cost_per_1k_tokens: 0.0001
+
+chunking_rules:
+  max_tokens_per_chunk: 512
+  max_tokens_per_list: 1024
+  overlap_tokens: 50
+  enforce_table_integrity: true
+  enforce_figure_caption_metadata: true
+  propagate_section_headers: true
+  resolve_cross_references: true
+
+page_index_rules:
+  summary_model: "gemini-1.5-flash"
+  max_summary_length: 3
+  extract_entities: true
+  enable_traversal: true
