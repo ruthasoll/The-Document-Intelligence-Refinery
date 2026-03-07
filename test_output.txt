@@ -1,0 +1,55 @@
+﻿=======================================================
+Phase 4: Query Agent Tests
+=======================================================
+.\env\Scripts\python.exe : 
+Traceback (most recent call last):
+At line:1 char:1
++ .\env\Scripts\python.exe 
+tests/test_query_agent.py *>&1 | 
+Out-File -F ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotS 
+   pecified: (Traceback (most rec  
+  ent call last)::String) [], Re   
+ moteException
+    + FullyQualifiedErrorId : Nati 
+   veCommandError
+ 
+  File "C:\Users\ruths\Desktop\TRP1
+\The-Document-Intelligence-Refinery
+\tests\test_query_agent.py", line 
+174, in <module>
+    func()
+  File "C:\Users\ruths\Desktop\TRP1
+\The-Document-Intelligence-Refinery
+\tests\test_query_agent.py", line 
+48, in test_router_classification
+    assert _classify_query("What 
+sections does this document 
+have?") == "navigate"
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^
+AssertionError
+
+During handling of the above 
+exception, another exception 
+occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\ruths\Desktop\TRP1
+\The-Document-Intelligence-Refinery
+\tests\test_query_agent.py", line 
+177, in <module>
+    print(f"\u274c FAIL: {name}")
+  File "C:\Python312\Lib\encodings\
+cp1252.py", line 19, in encode
+    return codecs.charmap_encode(in
+put,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' 
+codec can't encode character 
+'\u274c' in position 0: character 
+maps to <undefined>

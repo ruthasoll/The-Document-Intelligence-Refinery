@@ -68,3 +68,25 @@ page_index_rules:
   max_summary_length: 3
   extract_entities: true
   enable_traversal: true
+
+query_agent_rules:
+  embedding_model: "all-MiniLM-L6-v2"
+  vector_store_path: ".refinery/vector_store"
+  facts_db_path: ".refinery/facts.db"
+  top_k_default: 5
+  audit_confidence_threshold: 0.55
+  financial_keywords:
+    - "revenue"
+    - "profit"
+    - "assets"
+    - "liabilities"
+    - "expenditure"
+    - "income"
+    - "tax"
+    - "budget"
+    - "surplus"
+    - "deficit"
+    - "dividend"
+    - "cash"
+    - "net"
+    - "total"

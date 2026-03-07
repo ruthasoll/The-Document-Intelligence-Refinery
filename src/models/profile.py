@@ -62,6 +62,8 @@ class TextBlock(BaseModel):
     text: str
     bbox: BoundingBox
     confidence: float = Field(default=1.0, ge=0.0, le=1.0)
+    is_header: bool = False
+    level: Optional[int] = None
 
 class TableCell(BaseModel):
     text: str

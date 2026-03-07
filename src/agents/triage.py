@@ -55,8 +55,9 @@ class DocumentTriageAgent:
         with pdfplumber.open(file_path) as pdf:
             pages = pdf.pages
             page_count = len(pages)
-            # Sample up to 20 pages for triage efficiency
-            sample_pages = pages[:20]
+            # Sample up to 20 pages for triage efficiency, skipping the cover if many pages
+            start_page = 1 if page_count > 2 else 0
+            sample_pages = pages[start_page : start_page + 20]
             
             for page in sample_pages:
                 page_area = float(page.width * page.height)
@@ -80,6 +81,7 @@ class DocumentTriageAgent:
         
         return {
             "page_count": page_count,
+            "sampled_count": len(sample_pages),
             "avg_char_density": avg_char_density,
             "avg_image_ratio": avg_image_ratio,
             "total_tables": total_tables,
@@ -92,24 +94,27 @@ class DocumentTriageAgent:
         mixed = rules.get('mixed_threshold', {})
         
         if metrics['avg_char_density'] < scanned.get('max_char_density', 0.0001) and \
-           metrics['avg_image_ratio'] > scanned.get('min_image_ratio', 0.8):
+           metrics['avg_image_ratio'] > scanned.get('min_image_ratio', 0.8) and \
+           metrics['page_count'] < 5: # Only classify as scanned if very few characters AND low page count (proxy for cover/image only)
             return OriginType.SCANNED_IMAGE
         
-        if metrics['avg_image_ratio'] > mixed.get('min_image_ratio', 0.4):
-            return OriginType.MIXED
+        # If any page has significant characters, it's not "scanned_image" in the sense of needing VLM for everything
+        if metrics['avg_char_density'] < 0.00005: # Extremely low density
+            return OriginType.SCANNED_IMAGE
             
         return OriginType.NATIVE_DIGITAL
 
     def _detect_layout(self, metrics: Dict[str, Any]) -> LayoutComplexity:
         rules = self.rules.get('layout_complexity', {})
-        tables_per_page = metrics['total_tables'] / min(10, metrics['page_count'])
+        # Scale tables_per_page by sampled count, but also check absolute find.
+        # If we found any table in the sample, it's at least 'mixed'.
+        total_tables = metrics.get('total_tables', 0)
+        tables_per_page = total_tables / max(1, metrics['sampled_count'])
         
-        if tables_per_page > rules.get('table_heavy_min_tables_per_page', 0.5):
+        if total_tables > 5 or tables_per_page > rules.get('table_heavy_min_tables_per_page', 0.5):
             return LayoutComplexity.TABLE_HEAVY
             
-        # Simplification: if multi_column detection was better we'd use it here.
-        # For now, if we have some tables but not "heavy", call it mixed.
-        if tables_per_page > 0:
+        if total_tables > 0:
             return LayoutComplexity.MIXED
             
         return LayoutComplexity.SINGLE_COLUMN

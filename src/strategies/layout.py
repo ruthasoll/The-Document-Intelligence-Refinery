@@ -64,13 +64,16 @@ class LayoutExtractor(BaseExtractor):
 
             # Route based on type
             # In Docling, item can be TextItem, TableItem, PictureItem
-            from docling_core.types.doc.document import TextItem, TableItem, PictureItem
+            from docling_core.types.doc.document import TextItem, TableItem, PictureItem, DocItemLabel
             
             if isinstance(item, TextItem):
+                is_header = item.label in [DocItemLabel.TITLE, DocItemLabel.SECTION_HEADER, DocItemLabel.PAGE_HEADER]
                 blocks.append(TextBlock(
                     text=item.text,
                     bbox=bbox or BoundingBox(x0=0, y0=0, x1=0, y1=0, page_number=page_no),
-                    confidence=1.0
+                    confidence=1.0,
+                    is_header=is_header,
+                    level=level if is_header else None
                 ))
             elif isinstance(item, PictureItem):
                 figures.append(Figure(
@@ -81,12 +84,11 @@ class LayoutExtractor(BaseExtractor):
             # but we keep their position in 'blocks' if we want absolute reading order
             # or just rely on the 'tables' list.
 
-        # Separate pass for structured elements
         for tbl in doc.tables:
             cells = []
             for cell in tbl.data.table_cells:
                 c_bbox = None
-                if cell.prov:
+                if hasattr(cell, 'prov') and cell.prov:
                     cb = cell.prov[0].bbox
                     c_bbox = BoundingBox(
                         x0=float(cb.l), y0=float(cb.t),
@@ -96,12 +98,13 @@ class LayoutExtractor(BaseExtractor):
 
                 cells.append(TableCell(
                     text=cell.text,
-                    row_index=cell.row_index,
-                    col_index=cell.col_index,
-                    row_span=cell.row_span,
-                    col_span=cell.col_span,
+                    row_index=getattr(cell, 'row_index', getattr(cell, 'start_row_offset', 0)),
+                    col_index=getattr(cell, 'col_index', getattr(cell, 'start_col_offset', 0)),
+                    row_span=getattr(cell, 'row_span', 1),
+                    col_span=getattr(cell, 'col_span', 1),
                     bbox=c_bbox
                 ))
+
             
             t_bbox = None
             t_page = 1
@@ -112,9 +115,10 @@ class LayoutExtractor(BaseExtractor):
 
             tables.append(Table(
                 cells=cells,
-                markdown=tbl.export_to_markdown(),
+                markdown=tbl.export_to_markdown() if hasattr(tbl, "export_to_markdown") else "",
                 bbox=t_bbox or BoundingBox(x0=0, y0=0, x1=0, y1=0, page_number=t_page)
             ))
+
 
         for pic in doc.pictures:
             p_bbox = None
@@ -150,7 +154,8 @@ class LayoutExtractor(BaseExtractor):
             blocks=blocks,
             tables=tables,
             figures=figures,
-            full_text=doc.export_to_markdown(),
+            full_text=result.document.export_to_markdown().main_text,
+
             processing_time_s=time.time() - start_time,
             total_cost_usd=0.01 
         )
